@@ -1,0 +1,36 @@
+{
+  "name": "dailybriefingchatbotissues",
+  "version": "1.0.0",
+  "description": "A daily briefing service that captures LinkedIn comments and discussions regarding public-facing AI agents or chatbots misbehaving or hallucinating.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "ts-node --esm src/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidfleischmann/DailyBriefingChatbotIssues.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/davidfleischmann/DailyBriefingChatbotIssues/issues"
+  },
+  "homepage": "https://github.com/davidfleischmann/DailyBriefingChatbotIssues#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "apify-client": "^2.22.0",
+    "dotenv": "^17.2.4",
+    "resend": "^6.9.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3"
+  }
+}
