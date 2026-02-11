@@ -1,11 +1,8 @@
 import { Resend } from 'resend';
 import { config } from '../config.js';
-import type { DailyBriefingReport, ChatbotIssue } from '../types/index.js';
-
 const resend = new Resend(config.RESEND_API_KEY);
-
-function generateHtml(report: DailyBriefingReport): string {
-    const issuesHtml = report.issues.map((issue: ChatbotIssue) => `
+function generateHtml(report) {
+    const issuesHtml = report.issues.map((issue) => `
         <div style="margin-bottom: 20px; padding: 15px; border-left: 4px solid ${getSeverityColor(issue.severity)}; background-color: #f9f9f9;">
             <h3 style="margin: 0 0 10px 0; color: #333;">${issue.severity} Severity: ${issue.summary}</h3>
             <p style="margin: 0 0 5px 0;"><strong>Commenter:</strong> ${issue.commenter}</p>
@@ -13,7 +10,6 @@ function generateHtml(report: DailyBriefingReport): string {
             <a href="${issue.postUrl}" style="color: #0077b5; text-decoration: none;">View Original LinkedIn Post →</a>
         </div>
     `).join('');
-
     return `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
             <h1 style="color: #0077b5;">Daily AI Chatbot Briefing</h1>
@@ -29,8 +25,7 @@ function generateHtml(report: DailyBriefingReport): string {
         </div>
     `;
 }
-
-function getSeverityColor(severity: ChatbotIssue['severity']): string {
+function getSeverityColor(severity) {
     switch (severity) {
         case 'Critical': return '#d93025';
         case 'High': return '#f29900';
@@ -39,10 +34,8 @@ function getSeverityColor(severity: ChatbotIssue['severity']): string {
         default: return '#5f6368';
     }
 }
-
-export async function sendBriefing(report: DailyBriefingReport): Promise<void> {
+export async function sendBriefing(report) {
     console.log(`✉️ Sending briefing email to ${config.RECIPIENT_EMAIL}...`);
-
     try {
         const { data, error } = await resend.emails.send({
             from: config.FROM_EMAIL,
@@ -50,13 +43,15 @@ export async function sendBriefing(report: DailyBriefingReport): Promise<void> {
             subject: `Daily Briefing: AI Chatbot Issues - ${report.date}`,
             html: generateHtml(report),
         });
-
         if (error) {
             console.error("❌ Resend email failed:", error);
-        } else {
+        }
+        else {
             console.log("✅ Briefing email sent successfully!", data?.id);
         }
-    } catch (error) {
+    }
+    catch (error) {
         console.error("❌ Resend service error:", error);
     }
 }
+//# sourceMappingURL=resend.js.map
