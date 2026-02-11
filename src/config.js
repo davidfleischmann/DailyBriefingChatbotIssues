@@ -7,7 +7,9 @@ const envSchema = z.object({
     RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
     RECIPIENT_EMAIL: z.string().email("RECIPIENT_EMAIL must be a valid email"),
     FROM_EMAIL: z.string().default("Daily Briefing <onboarding@resend.dev>"),
-    TARGET_POST_URLS: z.string().transform((val) => val.split(',').map(url => url.trim())).optional(),
+    SEARCH_KEYWORDS: z.string()
+        .default("chatbot hallucinating, AI agent misbehaving, chatbot fail")
+        .transform((val) => val.split(',').map(kw => kw.trim())),
 });
 function validateConfig() {
     const parsed = envSchema.safeParse(process.env);

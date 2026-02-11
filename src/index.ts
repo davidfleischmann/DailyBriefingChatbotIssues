@@ -1,36 +1,31 @@
 import { config } from './config.js';
-import { scrapeLinkedInComments } from './services/apify.js';
-import { processComments } from './services/gemini.js';
+import { searchLinkedInPosts } from './services/apify.js';
+import { processPosts } from './services/gemini.js';
 import { sendBriefing } from './services/resend.js';
 import type { DailyBriefingReport } from './types/index.js';
 
 async function main() {
-    console.log("🌟 Starting Daily Briefing: AI Chatbot Misbehavior");
+    console.log("🌟 Starting Daily Briefing: AI Chatbot Misbehavior (Posts)");
 
-    const targetUrls = config.TARGET_POST_URLS;
-
-    if (!targetUrls || targetUrls.length === 0) {
-        console.warn("⚠️ No TARGET_POST_URLS provided in environment. Please add them to run the briefing.");
-        return;
-    }
+    const keywords = config.SEARCH_KEYWORDS;
 
     try {
-        // 1. Scrape comments
-        const rawComments = await scrapeLinkedInComments(targetUrls);
+        // 1. Search for posts
+        const posts = await searchLinkedInPosts(keywords);
 
-        if (rawComments.length === 0) {
-            console.log("📭 No comments found to process.");
+        if (posts.length === 0) {
+            console.log("📭 No posts found to process.");
             return;
         }
 
         // 2. Process with Gemini
-        const issues = await processComments(rawComments);
+        const issues = await processPosts(posts);
 
         // 3. Prepare Report
         const report: DailyBriefingReport = {
             date: new Date().toLocaleDateString(),
             issues: issues,
-            totalCommentsScanned: rawComments.length,
+            totalPostsScanned: posts.length,
         };
 
         // 4. Send Briefing

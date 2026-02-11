@@ -1,41 +1,45 @@
 import { ApifyClient } from 'apify-client';
 import { config } from '../config.js';
-import type { LinkedInComment } from '../types/index.js';
+import type { LinkedInPost } from '../types/index.js';
 
 const client = new ApifyClient({
     token: config.APIFY_API_TOKEN,
 });
 
-export async function scrapeLinkedInComments(postUrls: string[]): Promise<LinkedInComment[]> {
-    if (postUrls.length === 0) return [];
+export async function searchLinkedInPosts(keywords: string[]): Promise<LinkedInPost[]> {
+    if (keywords.length === 0) return [];
 
-    console.log(`🚀 Starting scrape for ${postUrls.length} posts...`);
+    console.log(`🚀 Searching LinkedIn for posts with keywords: ${keywords.join(', ')}...`);
 
-    // Prepare Actor input
+    // Prepare Actor input for apify/linkedin-post-scraper
+    // This actor often supports keyword search via the searchUrl or specific keyword field
     const input = {
-        "postUrls": postUrls,
-        "maxItems": 100, // Reasonable limit per post for daily briefing
-        "postedLimit": "24h", // Only get recent comments
-        "scrapeReplies": true,
+        "searchKeywords": keywords.join(' '),
+        "maxItems": 50, // Total items to scrape
+        "postedLimit": "24h", // Recency
+        "scrapeCompanyPosts": false,
+        "scrapePersonalPosts": true,
     };
 
     try {
-        // Run the Actor and wait for it to finish
-        const run = await client.actor("apify/linkedin-post-comments-scraper").call(input);
-
-        // Fetch and print Actor results from the run's dataset (if any)
+        const run = await client.actor("apify/linkedin-post-scraper").call(input);
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
         return items.map((item: any) => ({
             id: item.id || Math.random().toString(36).substr(2, 9),
-            text: item.commentText || "",
+            text: item.text || "",
             authorName: item.authorName || "Unknown",
             authorProfileUrl: item.authorProfileUrl,
-            postUrl: item.postUrl,
+            postUrl: item.url || item.postUrl,
             postedAt: item.postedAt || new Date().toISOString(),
+            engagement: {
+                reactions: item.reactionsCount || 0,
+                comments: item.commentsCount || 0,
+                shares: item.sharesCount || 0,
+            }
         }));
     } catch (error) {
-        console.error("❌ Apify scrape failed:", error);
+        console.error("❌ Apify post search failed:", error);
         return [];
     }
 }

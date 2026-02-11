@@ -1,13 +1,15 @@
 # Daily Briefing AI Chatbot Issues
 
-A daily briefing service that captures LinkedIn comments and discussions regarding public-facing AI agents or chatbots misbehaving or hallucinating.
+This service monitors LinkedIn for **posts** discussing AI chatbot misbehavior, hallucinations, or failures. It utilizes Apify for scraping, Google Gemini for intelligent analysis, and Resend for daily email briefings.
 
 ## Overview
 
-This tool automates the process of monitoring LinkedIn for "AI fails". It uses:
-- **Apify**: To scrape comments from targeted LinkedIn posts.
-- **Google Gemini 1.5 Flash**: To analyze comments and filter for specific reports of chatbots misbehaving or hallucinating.
-- **Resend**: To deliver a professionally formatted daily email briefing.
+This tool automates the process of monitoring LinkedIn for "AI fails".
+
+## Features
+- **LinkedIn Post Search**: Automatically searches for key terms like "chatbot hallucinating" or "AI agent fail".
+- **AI Analysis**: Uses Gemini 1.5 Flash to filter out marketing and find genuine failure reports.
+- **Daily Briefing**: Sends a formatted HTML email report via Resend.
 
 ## Project Structure
 
@@ -32,10 +34,13 @@ This tool automates the process of monitoring LinkedIn for "AI fails". It uses:
 
 3. **Configure environment variables**:
    Create a `.env` file based on `.env.example` and fill in your API keys:
-   - `APIFY_API_TOKEN`: Your Apify account token.
-   - `GOOGLE_GEMINI_API_KEY`: Your Google AI Studio API key.
-   - `RESEND_API_KEY`: Your Resend API key.
-   - `RECIPIENT_EMAIL`: The email address where the briefing should be sent.
+   - ```env
+APIFY_API_TOKEN=your_apify_token
+GOOGLE_GEMINI_API_KEY=your_gemini_key
+RESEND_API_KEY=your_resend_key
+RECIPIENT_EMAIL=your_email@example.com
+SEARCH_KEYWORDS="chatbot hallucinating, AI fail, chatbot misbehaving"
+```
    - `TARGET_POST_URLS`: A comma-separated list of LinkedIn post URLs you want to monitor.
 
 4. **Run the briefing manually**:

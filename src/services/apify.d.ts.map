@@ -1,1 +1,1 @@
-{"version":3,"file":"apify.d.ts","sourceRoot":"","sources":["apify.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,mBAAmB,CAAC;AAMzD,wBAAsB,sBAAsB,CAAC,QAAQ,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,eAAe,EAAE,CAAC,CAgC3F"}
+{"version":3,"file":"apify.d.ts","sourceRoot":"","sources":["apify.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,mBAAmB,CAAC;AAMtD,wBAAsB,mBAAmB,CAAC,QAAQ,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,YAAY,EAAE,CAAC,CAoCrF"}

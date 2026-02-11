@@ -5,7 +5,7 @@ declare const envSchema: z.ZodObject<{
     RESEND_API_KEY: z.ZodString;
     RECIPIENT_EMAIL: z.ZodString;
     FROM_EMAIL: z.ZodDefault<z.ZodString>;
-    TARGET_POST_URLS: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<string[], string>>>;
+    SEARCH_KEYWORDS: z.ZodPipe<z.ZodDefault<z.ZodString>, z.ZodTransform<string[], string>>;
 }, z.core.$strip>;
 export type EnvConfig = z.infer<typeof envSchema>;
 export declare const config: {
@@ -14,7 +14,7 @@ export declare const config: {
     RESEND_API_KEY: string;
     RECIPIENT_EMAIL: string;
     FROM_EMAIL: string;
-    TARGET_POST_URLS?: string[] | undefined;
+    SEARCH_KEYWORDS: string[];
 };
 export {};
 //# sourceMappingURL=config.d.ts.map
